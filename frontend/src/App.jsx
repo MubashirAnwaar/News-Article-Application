@@ -5,11 +5,13 @@ import { BrowserRouter as Router, Routes, Route, BrowserRouter } from "react-rou
 import About from "./pages/About";
 import Dashboard from "./pages/Dashboard";
 import NewsArticle from "./pages/NewsArticle";
+import Header from "./components/shared/Header";
 
 
 function App() {
   return (
     <BrowserRouter>
+    <Header />
         <Routes>
           <Route path="/sign-in" element={<SignInForm />} />
           <Route path="/sign-up" element={<SignUpForm />} />

@@ -6,6 +6,8 @@ import About from "./pages/About";
 import Dashboard from "./pages/Dashboard";
 import NewsArticle from "./pages/NewsArticle";
 import Header from "./components/shared/Header";
+import { Toaster } from "./components/ui/sonner";
+import Footer from "./components/shared/Footer";
 
 
 function App() {
@@ -21,6 +23,9 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/news" element={<NewsArticle />} />
         </Routes>
+
+        <Footer />
+        <Toaster />
     </BrowserRouter>
   );
 }

@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import authRoutes from "./routes/authRoute.js";
 dotenv.config();
 
 const app = express();
@@ -30,3 +31,16 @@ mongoose
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+app.use('/api/auth',authRoutes)
+
+app.use((err,req,res,next) => {
+  const statusCode = err.statusCode || 500
+  const message = err.message || "Internal Serve Error"
+
+  res.status(statusCode).json({
+    success: false,
+    statusCode,
+    message
+  })
+})

@@ -79,7 +79,12 @@ export const signin = async (req, res, next) => {
       .json({
         message: "User signed in successfully",
         token,
-        user: { id: user._id, username: user.username, email: user.email },
+        user: {
+          id: user._id,
+          username: user.username,
+          email: user.email,
+          profilePicture: user.profilePicture,
+        },
       });
   } catch (error) {
     console.error("Signin error:", error);

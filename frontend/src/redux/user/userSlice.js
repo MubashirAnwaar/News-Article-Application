@@ -1,15 +1,16 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 // Initial state
 const initialState = {
   currentUser: null,
   error: null,
   loading: false,
+  isAuthenticated: false,
 };
 
 // Async thunk for signing in
 export const signInUser = createAsyncThunk(
-  'user/signInUser',
+  "user/signInUser",
   async (values, { rejectWithValue }) => {
     try {
       const response = await fetch("/api/auth/signin", {
@@ -41,6 +42,11 @@ const userSlice = createSlice({
       state.error = null;
       state.loading = false;
     },
+    signinSuccess: (state, action) => {
+      state.user = action.payload.user;
+      state.token = action.payload.token;
+      state.isAuthenticated = true;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -60,5 +66,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { logout } = userSlice.actions;
+export const { logout, signinSuccess } = userSlice.actions;
 export default userSlice.reducer;

@@ -18,6 +18,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useDispatch } from "react-redux";
 import { signInUser } from "../../redux/user/userSlice";
+import GoogleAuth from "../../components/shared/GoogleAuth";
 
 const formSchema = z.object({
   email: z.string().min({ message: "Invalid email address" }),
@@ -48,18 +49,15 @@ const SignInForm = () => {
       setErrMessage(null);
 
       // Wait for the API call to finish and get the result
-      const result = await dispatch(signInUser(values));
+      const result = await dispatch(signInUser(values)).unwrap();
 
       setLoading(false);
 
-      if (result.success === false) {
-        // toast({title: "Sign in failed! Please try again."})
-        return setErrMessage(result.message);
-      }
-
       // toast({title: "Sign in Successful"})
+      toast.success("Signed in successfully!");
       navigate("/");
     } catch (error) {
+      toast.error(error);
       setErrMessage(error.message);
       setLoading(false);
       // toast({title: "Something went wrong! Please try again."})
@@ -133,6 +131,7 @@ const SignInForm = () => {
                   <span>Sign In</span>
                 )}
               </Button>
+              <GoogleAuth />
             </form>
           </Form>
 

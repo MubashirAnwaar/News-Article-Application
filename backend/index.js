@@ -26,21 +26,20 @@ mongoose
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.log("MongoDB connection error: ", err));
 
-
 // Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
-app.use('/api/auth',authRoutes)
+app.use("/api/auth", authRoutes);
 
-app.use((err,req,res,next) => {
-  const statusCode = err.statusCode || 500
-  const message = err.message || "Internal Serve Error"
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Internal Serve Error";
 
   res.status(statusCode).json({
     success: false,
     statusCode,
-    message
-  })
-})
+    message,
+  });
+});

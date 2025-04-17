@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { Button } from "@/components/ui/button"
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { Button } from "@/components/ui/button";
 import { useToast } from "../../hooks/use-toast";
 
 import {
@@ -14,60 +14,62 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
- 
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import GoogleAuth from "../../components/shared/GoogleAuth";
+
 const formSchema = z.object({
-  username: z.string().min(2, {message: "Username must be at least 2 characters"}),
-  email: z.string().min({message: "Invalid email address"}),
-  password: z.string().min(8, {message: "Password must be at least 8 characters"}),
-})
+  username: z
+    .string()
+    .min(2, { message: "Username must be at least 2 characters" }),
+  email: z.string().min({ message: "Invalid email address" }),
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters" }),
+});
 
 const SignUpForm = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [errMessage, setErrMessage] = useState(null);
-    // 1. Define your form.
-    const form = useForm({
-      resolver: zodResolver(formSchema),
-      defaultValues: {
-        username: "",
-        email: "",
-        password: "",
-      },
-    })
+  // 1. Define your form.
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      username: "",
+      email: "",
+      password: "",
+    },
+  });
 
-    async function onSubmit(values) {
-     
-      try {
-        setLoading(true);
-        setErrMessage(null);
+  async function onSubmit(values) {
+    try {
+      setLoading(true);
+      setErrMessage(null);
 
-        const response = await fetch("api/auth/signup", {
-          method: "POST",
-          headers:{ "content-Type": 'application/json'},
-          body: JSON.stringify(values),
-        })
+      const response = await fetch("api/auth/signup", {
+        method: "POST",
+        headers: { "content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
 
-        const data = response.json();
-        if(data.success === false){
-          setLoading(false);
-          toast({title: "Sign up failed! Please try again."})
-          return setErrMessage(data.message)
-        }
-        setLoading(false)
-        if(response.ok){
-          toast({title: "Sign up Successful"})
-          navigate("/sign-in")
-        }
-      } catch (error) {
-        setErrMessage(error.message)
-        setLoading(false)
-        toast({title: "Something went wrong! Please try again."})
+      const data = response.json();
+      if (data.success === false) {
+        setLoading(false);
+        toast({ title: "Sign up failed! Please try again." });
+        return setErrMessage(data.message);
       }
-
+      setLoading(false);
+      if (response.ok) {
+        navigate("/sign-in");
+      }
+    } catch (error) {
+      setErrMessage(error.message);
+      setLoading(false);
+      toast({ title: "Something went wrong! Please try again." });
     }
+  }
 
   return (
     <div className="min-h-screen mt-20">
@@ -89,65 +91,78 @@ const SignUpForm = () => {
         </div>
 
         <div className="flex-1">
-        <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
-        <FormField
-          control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input type="text" placeholder="Username" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input type="email" placeholder="xyz@gmail.com" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Input type="password" placeholder="password" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit" className="bg-blue-500 w-full" disabled={loading}>
-          {loading ? (
-            <span className="animate-pulse">Loading...</span>
-          ) : (
-            <span>Sign Up</span>
-          )
-          
-          }
-          </Button>
-      </form>
-    </Form>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Username</FormLabel>
+                    <FormControl>
+                      <Input type="text" placeholder="Username" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="email"
+                        placeholder="xyz@gmail.com"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="password"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button
+                type="submit"
+                className="bg-blue-500 w-full"
+                disabled={loading}
+              >
+                {loading ? (
+                  <span className="animate-pulse">Loading...</span>
+                ) : (
+                  <span>Sign Up</span>
+                )}
+              </Button>
 
-    <div className="flex gap-2 text-sm mt-5">
-      <span>Have an account?</span>
-      <Link to={"/sign-in"} className="text-blue-500">Sign In
-      </Link>
-    </div>
-    {errMessage && <p className="mt-5 text-red-500">{errMessage}</p>}
+              <GoogleAuth />
+            </form>
+          </Form>
+
+          <div className="flex gap-2 text-sm mt-5">
+            <span>Have an account?</span>
+            <Link to={"/sign-in"} className="text-blue-500">
+              Sign In
+            </Link>
+          </div>
+          {errMessage && <p className="mt-5 text-red-500">{errMessage}</p>}
         </div>
       </div>
     </div>

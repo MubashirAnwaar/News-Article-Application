@@ -19,8 +19,8 @@ const Header = () => {
             placeholder="Search..."
             className="focus:outline-none bg-transparent w-24 sm:w-64"
           />
-          <button>
-            <FaSearch className="text-slate-600" />
+          <button className="p-2 bg-transparent border-none outline-none">
+            <FaSearch className="text-slate-600"/>
           </button>
         </form>
         <ul className="flex gap-4">
